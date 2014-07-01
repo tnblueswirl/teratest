@@ -30,7 +30,7 @@ class Parser
         // If Target is set, parse
         if ($target = $this->getTarget()) {
             // Perform cURL request and get Results
-            $curlResponse = $this->curlRequest($target->getUrl(true));
+            $curlResponse = $this->curlRequest($target->getUrl());
 
             // Check response for errors, get size if good
             if ($curlResponse['error']) {
@@ -62,13 +62,13 @@ class Parser
         $content_length = 0;
 
         // Try to get the Status from the cURL results
-        if (preg_match("/^HTTP\/1\.[01] (\d\d\d)/", $curlResult, $matches)) {
-            $status = intval($matches[1]);
+        if (preg_match("/^HTTP\/1\.[01] (\d\d\d)/", $curlResult, $sMatches)) {
+            $status = intval($sMatches[1]);
         }
 
         // Try to get the Content Length from the cURL results
-        if (preg_match("/Content-Length: (\d+)/", $curlResult, $matches)) {
-            $content_length = intval($matches[1]);
+        if (preg_match("/Content-Length: (\d+)/", $curlResult, $clMatches)) {
+            $content_length = (int)$clMatches[1];
         }
 
         // If Status is good, set size to content length

@@ -54,14 +54,14 @@ class UrlSize
                 }
             }
 
-
+            // Add request count to results
+            $results['count'] = count($oTargets);
 
             // If Destination is specified, write results to it.
             if ($dest = $this->_getDestination()) {
-                // TODO: Write JSON results to file
+                file_put_contents($dest, json_encode($results));
             } else {
-                var_dump($results);
-                // TODO: Output formatted results to screen
+                echo $this->_formatOutput($results);
             }
         }
     }
@@ -160,6 +160,22 @@ class UrlSize
         }
 
         return $dest;
+    }
+
+    protected function _formatOutput($results)
+    {
+        $output = "";
+
+        $requests = $results['count'];
+        unset($results['count']);
+
+        foreach ($results as $result) {
+            $output .= sprintf("%-50s\t\t\t\tSize: %s\n", $result['url'], $result['size']);
+        }
+
+        $output .= "\nRequests: {$requests}\n";
+
+        return $output;
     }
 
     /**

@@ -80,6 +80,7 @@ class Target
 
     /**
      * Check if Target has errors
+     *
      * @return bool
      */
     public function hasErrors()
@@ -122,6 +123,32 @@ class Target
     }
 
     /**
+     * Format size
+     *
+     * @param $bytes
+     *
+     * @return string
+     */
+    public function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824) {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        } elseif ($bytes >= 1048576) {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        } elseif ($bytes >= 1024) {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        } elseif ($bytes > 1) {
+            $bytes = $bytes . ' bytes';
+        } elseif ($bytes == 1) {
+            $bytes = $bytes . ' byte';
+        } else {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+    }
+
+    /**
      * Get Target Data As Array
      *
      * @param bool $json - Flag to determine if output should be JSON encoded
@@ -130,7 +157,7 @@ class Target
      */
     public function getAsArray($json = false)
     {
-        $output = array('url' => $this->getUrl(), 'size' => $this->getSize());
+        $output = array('url' => $this->getUrl(), 'size' => $this->formatSizeUnits($this->getSize()));
 
         return $json ? json_encode($output) : $output;
     }

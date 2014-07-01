@@ -58,9 +58,10 @@ class UrlSize
 
             // If Destination is specified, write results to it.
             if ($dest = $this->_getDestination()) {
-                // TODO: Write results to file
+                // TODO: Write JSON results to file
             } else {
-                // TODO: Output restuls to screen
+                var_dump($results);
+                // TODO: Output formatted results to screen
             }
         }
     }
